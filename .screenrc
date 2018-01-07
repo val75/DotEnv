@@ -1,0 +1,11 @@
+# Kill startup message
+startup_message off
+
+# Define a bigger scrollback, defaut is 100 lines
+defscrollback 10000
+
+# Make the shell in every window a login shell
+shell -$SHELL
+
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}]'
