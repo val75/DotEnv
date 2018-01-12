@@ -2,3 +2,7 @@
 
 # Highlight section titles in manual pages.
 export LESS_TERMCAP_md="${yellow}";
+
+# Go exports
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
