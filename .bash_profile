@@ -1,4 +1,4 @@
-echo "Loading .bash_profile"
+#echo "Loading .bash_profile"
 
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
