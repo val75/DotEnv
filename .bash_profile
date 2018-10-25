@@ -1,5 +1,3 @@
-#echo "Loading .bash_profile"
-
 # Add `~/bin` to the `$PATH`
 export PATH="$HOME/bin:$PATH";
 
@@ -13,3 +11,5 @@ for file in ~/.{path,bash_prompt,exports,aliases,functions,extra}; do
 	[ -r "$file" ] && [ -f "$file" ] && source "$file";
 done;
 unset file;
+
+brew analytics off 2>&1 >/dev/null

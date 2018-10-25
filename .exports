@@ -4,5 +4,5 @@
 export LESS_TERMCAP_md="${yellow}";
 
 # Go exports
-export GOPATH=$HOME/go
+export GOPATH=$HOME/gocode
 export PATH=$PATH:$GOPATH/bin
