@@ -1,0 +1,18 @@
+[user]
+  name = Valentin Ghiur
+  email = valentin@testinmotion.com
+
+[alias]
+  l = log --pretty=oneline -n 20 --graph --abbrev-commit
+  lg = log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr by %an)%Creset' --abbrev-commit --date=relative
+  lgg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr by %an)%Creset' --abbrev-commit --date=relative
+  s = status -s
+
+[help]
+  autocorrect = 1
+
+[core]
+  editor = /usr/bin/vim
+
+[rerere]
+  enabled = true

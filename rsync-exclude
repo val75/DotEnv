@@ -1,0 +1,6 @@
+- .git/
+- .gitconfig.normal
+- .DS_STORE
+- *.swp
+- Makefile
+- rsync-exclude
