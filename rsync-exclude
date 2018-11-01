@@ -1,5 +1,6 @@
 - .git/
 - .gitconfig.normal
+- .vimrc.normal
 - .DS_STORE
 - *.swp
 - Makefile
