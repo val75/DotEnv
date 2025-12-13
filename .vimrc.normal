@@ -1,6 +1,10 @@
 " Pathogen
 execute pathogen#infect()
+
+" Enable syntax highlighting
 syntax on
+
+" Activates filetype-specific plugins and indentation rules
 filetype plugin indent on
 
 " Use the Solarized Dark theme
@@ -33,9 +37,6 @@ endif
 " Enable line numbers
 set number
 
-" Enable syntax highlighting
-syntax on
-
 " Highlight current line
 set cursorline
 
@@ -65,3 +66,12 @@ set title
 
 " Map NERDTreeToggle to Ctrl-o
 map <C-o> :NERDTreeToggle<CR>
+
+" Python specific indentation settings (4 spaces, no tabs)
+augroup python
+	autocmd!
+	autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab smartindent autoindent
+augroup end
+
+" Disable continuation of comments to the next line
+set formatoptions-=cro
