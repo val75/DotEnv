@@ -64,6 +64,12 @@ set showmode
 " Show the filename in the window titlebar
 set title
 
+" Auto-reload buffer when the file changes on disk. Pairs with tmux's
+" `focus-events on` so clicking back into a vim pane reloads externally-edited
+" files. CursorHold acts as a fallback when focus events don't reach vim.
+set autoread
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * silent! checktime
+
 " Map NERDTreeToggle to Ctrl-o
 map <C-o> :NERDTreeToggle<CR>
 

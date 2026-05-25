@@ -1,0 +1,22 @@
+# tmux config cleanup
+
+Tracking suggestions for `.tmux/tmux.conf` and `.tmux/tmux.remote.conf` (and the `.r610` variant).
+
+## Done
+
+- [x] **#1 — Theme color vars defined after referenced.** Moved the `# === Theme ===` block above the widget definitions so `$color_dark`, `$color_secondary`, etc. are populated when widget format strings are parsed. Applied to both `tmux.conf` and `tmux.conf.r610`.
+- [x] **#2 — Hardcoded `status-style` colors.** Changed `set -g status-style "fg=white,bg=black"` to `"fg=$color_light,bg=$color_dark"` so the theme block is the single source of truth. Applied to both files.
+- [x] **#3 — Remove deprecated options.** Dropped `utf8`/`status-utf8` (removed in tmux 2.2) and combined `window-status-current-fg/-bg` into `window-status-current-style` (the fg/bg variants were removed in tmux 2.9). Applied to both `tmux.conf` and `tmux.conf.r610`.
+- [x] **#4 — Modernize `default-terminal` and enable truecolor.** Switched from `screen-256color` to `tmux-256color` and added `set -ga terminal-overrides ",*256col*:Tc"`. Applied to both files.
+- [x] **#5 — Reduce status refresh overhead.** Bumped `status-interval` to 5 (15 in `tmux.remote.conf`), replaced `#(hostname -s)` with built-in `#h`, dropped seconds from the clock format (`%r` → `%H:%M`), bumped `status-right-length` to 80, and deleted the dead commented `status-bg`/`status-fg` lines. `#(whoami)` kept (one cheap fork per 5s).
+- [x] **#6 — Add `focus-events`, `renumber-windows`, `aggressive-resize`.** Added all three after the theme block in both `tmux.conf` and `tmux.conf.r610`: `focus-events on` (vim autoread), `renumber-windows on` (compact window numbers), `aggressive-resize on` (nested-tmux friendly).
+- [x] **#7 — Rework split bindings + add vim-style pane navigation.** Unbound `v`/`h`, added `bind |` and `bind -` (visually-named splits inheriting current pane dir), and bound `h/j/k/l` to `select-pane -L/-D/-U/-R` (vim-style pane navigation, consistent with `mode-keys vi`). Applied to both `tmux.conf` and `tmux.conf.r610`. User was already using defaults `%` and `"` for splits, so no muscle-memory disruption.
+- [x] **#9 — Resolve orphaned `@copy_backend_remote_tunnel_port`.** Deleted the line and its comment from `tmux.remote.conf`. It was a setting for `tmux-yank`'s tunnel mode (which requires a local clipboard-relay daemon + SSH RemoteForward) — a workaround from before OSC 52 was widely supported. Now obsolete: `tmux-yank` isn't installed, and our OSC 52 setup covers remote→local clipboard with zero external infrastructure.
+- [x] **#10 — Dedupe `status-right` between local and remote.** Introduced a `wg_status_base` variable holding the shared chunk (`prefix_highlight`, `wg_is_keys_off`, `wg_is_zoomed`, session brackets, date). `tmux.conf` builds `status-right` as `"$wg_status_base |$wg_battery"`; `tmux.remote.conf` builds it as `"$wg_status_base"`. Single source of truth for the common bits; mirrored in `tmux.conf.r610` for consistency.
+- [x] **#11 — Plugin hygiene.** Dropped `tmux-online-status` (loaded but never referenced anywhere) and `tmux-sidebar` (unused) from both `tmux.conf` and `tmux.conf.r610`. Added explicit `tmux-continuum` settings to `tmux.conf`: `@continuum-restore 'on'` (turns on auto-restore — the default was off, so the feature wasn't actually doing anything useful) and `@continuum-save-interval '15'` (pinned at default for documentation).
+- [x] **#12 — Unify r610 with main conf.** Deleted `tmux.conf.r610` entirely and removed the `r610` target from the Makefile. r610 now uses `tmux.conf` like every other host. Defensive change: switched `allow-passthrough` to `set -gq` so older tmux silently ignores it instead of erroring (since the conf now deploys everywhere, including potentially-older boxes).
+- [x] **#8 — Add vi-mode copy bindings.** Added four bindings under `copy-mode-vi` to match vim's visual-mode muscle memory: `v` (begin-selection), `V` (select-line), `Ctrl-v` (rectangle-toggle), `y` (copy-selection-and-cancel). With `set-clipboard on` already enabled, `y` writes to both tmux's paste buffer and the macOS clipboard via OSC 52.
+
+## Pending — low priority
+
+- [ ] **#13 — Uncomment `bind c new-window -c '#{pane_current_path}'`.** Default `prefix c` opens a new window in the login/home dir. Uncomment the existing line in both `tmux.conf` and `tmux.conf.r610` so new windows inherit the current pane's directory, mirroring what the splits already do. Trivial change.
