@@ -7,8 +7,11 @@ all:
 	@echo "\t\tval's dotfiles"
 	@echo "\n"
 
-install:
+install-tmux:
+	@rsync --verbose --recursive .tmux $(TARGET_DIR)
+	@ln -sf $(TARGET_DIR)/.tmux/tmux.conf $(TARGET_DIR)/.tmux.conf
+
+install: install-tmux
 	@cp .gitconfig.normal .gitconfig
 	@cp .vimrc.normal .vimrc
 	@rsync --verbose --recursive --exclude-from=rsync-exclude . $(TARGET_DIR)
-	@ln -sf $(TARGET_DIR)/.tmux/tmux.conf $(TARGET_DIR)/.tmux.conf
